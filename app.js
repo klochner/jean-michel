@@ -1,37 +1,39 @@
-var express = require('express'),
-    fs      = require('fs')
+require('./lib/underscore');
+
+var express   = require('express'),
+    fs        = require('fs'),
+    path      = require('path')
 ;
 
-var app = express();
+global.Project    = {};
+global.app        = express();
 
+Project.root_path = __dirname;
 
-//loading the app/
-var base_path = __dirname;
-var folders = ['app/controllers', 'app/models', 'lib']
-
-var Logger;
-folders.forEach(function(folder){
-  fs.readdirSync(base_path + '/' + folder).forEach(function(file){
-    if(folder == folders[0])
-      require(base_path + '/' + folder + '/' + file)(app);
-    else
-      if(file == 'logger.js'){
-        Logger = require(base_path + '/' + folder + '/' + file);
-      }
-      else
-        require(base_path + '/' + folder + '/' + file);
-  })
-});
-
-app.configure(function(){
-
-  app.use(function(req, res, next){
-      Logger.request(req);
-      next();
-  });
-});
-
-var settings = require('./config/settings.js')(app);
-app.listen(app.get('port'), function(){
+require('./config/application.js').configure({
+  express: express,
+  paths: {
+    controllers: path.join(Project.root_path, 'app', 'controllers'),
+    models:      path.join(Project.root_path, 'app', 'models'),
+    views:       path.join(Project.root_path, 'app', 'views'),
+    assets:       path.join(Project.root_path, 'app', 'assets'),
+    public:      path.join(Project.root_path, 'public'),
+    config:      path.join(Project.root_path, 'config'),
+    lib:         path.join(Project.root_path, 'lib')
+  }
+}).listen(app.get('port'), function(){
   console.log('running on %s', app.get('port'))
 });
+
+
+//app.configure(function(){
+
+  //app.use(function(req, res, next){
+      //Logger.request(req);
+      //next();
+  //});
+//});
+
+/*
+ *var settings = require('./config/settings.js')(app);
+ */
