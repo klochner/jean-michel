@@ -17,11 +17,12 @@ module.exports.configure = function(options){
 
   app.configure(function(){
     app.set('port', process.env.port || 3000);
-    app.set('views', __dirname + '/../app/views');
+    app.set('views', options.paths.views);
     app.set('view engine', 'jade');
 
     app.use(function(req, res, next){
       logger.request(req);
+      next();
     });
 
     app.use(stylus.middleware({
