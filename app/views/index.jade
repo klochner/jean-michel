@@ -2,4 +2,5 @@ extends layouts/application
 
 block content
   h1= title
-  p welcome to #{title}
+  div(data-ng-controller='dummyCtrl')
+    {{foo}}

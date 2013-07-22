@@ -14,27 +14,29 @@ module.exports.configure = function(options){
   require(path.join(options.paths.lib,'controllers.js')).autoload(options.paths.controllers);
   require(path.join(options.paths.config,'routes.js')).draw(options.paths.lib, app);
 
+  //console.log(process.env.NODE_ENV)
+  app.configure('development', function(){
+    app.use(express.logger('dev'));
+  })
 
   app.configure(function(){
     app.set('port', process.env.port || 3000);
     app.set('views', options.paths.views);
     app.set('view engine', 'jade');
 
-    app.use(function(req, res, next){
-      logger.request(req);
-      next();
-    });
 
-    app.use(stylus.middleware({
+    app.use('/vendor', express.static(path.join(options.paths.public, 'vendor'), {maxAge: 86400000}));
+
+    app.use('/styles',stylus.middleware({
       debug: true,
-      src: options.paths.assets,
-      dest: options.paths.public,
+      src: options.paths.assets + '/styles',
+      dest: options.paths.public + '/styles',
       compile: function(str, path){
         return stylus(str).set('filename', path).use(nib()).set('compress', false).import('nib');
       }
     }));
 
-    app.use(express.static(options.paths.public, {maxAge: 86400000}));
+    app.use(express.static(options.paths.public));
   });
 
   return app;
