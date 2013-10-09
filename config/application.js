@@ -2,15 +2,16 @@ module.exports.configure = function(options){
   var app = global.app,
     express = options.express,
     path    = require('path'),
-    logger    = require(path.join(options.paths.lib, 'logger')),
+    logger  = require(path.join(options.paths.lib, 'logger')),
     stylus  = require('stylus'),
-    nib     = require('nib')
+    nib     = require('nib'),
+    mongoose = require('mongoose')
   ;
 
-  global.mongodb = {} //mongoose.connect('mongodb://localhost/project');
+  global.mongodb = mongoose.connect('mongodb://localhost/jean-michel');
   global.logger  = logger
 
-  //require(path.join(options.paths.lib,'models.js')).autoload(options.paths.models, mongodb);
+  require(path.join(options.paths.lib,'models.js')).autoload(options.paths.models, mongodb);
   require(path.join(options.paths.lib,'controllers.js')).autoload(options.paths.controllers);
   require(path.join(options.paths.config,'routes.js')).draw(options.paths.lib, app);
 
