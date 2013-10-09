@@ -25,15 +25,3 @@ require('./config/application.js').configure({
   console.log('running on %s', app.get('port'))
 });
 
-
-//app.configure(function(){
-
-  //app.use(function(req, res, next){
-      //Logger.request(req);
-      //next();
-  //});
-//});
-
-/*
- *var settings = require('./config/settings.js')(app);
- */
