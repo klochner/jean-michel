@@ -1,3 +1,6 @@
 /*
  * Nib provides a CSS reset
  */
+.link_text {
+  padding: 0 0.3em;
+}
