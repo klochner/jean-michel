@@ -8,7 +8,8 @@ module.exports.configure = function(options){
     mongoose = require('mongoose')
   ;
 
-  global.mongodb = mongoose.connect('mongodb://localhost/jean-michel');
+  mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/jean-michel'
+  global.mongodb = mongoose.connect(mongoUri);
   global.logger  = logger
 
   require(path.join(options.paths.lib,'models.js')).autoload(options.paths.models, mongodb);
