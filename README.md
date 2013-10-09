@@ -1,4 +1,4 @@
-express-angular-mongoose-socketio
+Jean-michel
 =================================
 
-bootstrap express app with angular/mongoose/socketio and more coming
+Ping pong app to keep track of the scores and display some charts of the perf
