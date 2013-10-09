@@ -10,7 +10,7 @@ module.exports.configure = function(options){
   global.mongodb = {} //mongoose.connect('mongodb://localhost/project');
   global.logger  = logger
 
-  require(path.join(options.paths.lib,'models.js')).autoload(options.paths.models, mongodb);
+  //require(path.join(options.paths.lib,'models.js')).autoload(options.paths.models, mongodb);
   require(path.join(options.paths.lib,'controllers.js')).autoload(options.paths.controllers);
   require(path.join(options.paths.config,'routes.js')).draw(options.paths.lib, app);
 
@@ -20,14 +20,14 @@ module.exports.configure = function(options){
   })
 
   app.configure(function(){
-    app.set('port', process.env.port || 3000);
+    app.set('port', process.env.PORT || 3000);
     app.set('views', options.paths.views);
     app.set('view engine', 'jade');
 
 
-    app.use('/vendor', express.static(path.join(options.paths.public, 'vendor'), {maxAge: 86400000}));
+    app.use('/public/vendor', express.static(path.join(options.paths.public, 'vendor'), {maxAge: 86400000}));
 
-    app.use('/styles',stylus.middleware({
+    app.use('/public/styles',stylus.middleware({
       debug: true,
       src: options.paths.assets + '/styles',
       dest: options.paths.public + '/styles',
@@ -36,7 +36,7 @@ module.exports.configure = function(options){
       }
     }));
 
-    app.use(express.static(options.paths.public));
+    app.use('/public', express.static(options.paths.public));
   });
 
   return app;
